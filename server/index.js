@@ -19,4 +19,39 @@ async function connectDB() {
 		console.error("Error connecting to MongoDB:", err);
 	}
 }
+
+app.post("/registerName", async (req, res) => {
+	console.log(req.body);
+	if (!req.body.name) {
+		res.status(400).send({
+			status: "Bad request",
+			message: "Name field is required",
+		});
+		return;
+	}
+	try {
+		await client.connect();
+		const database = client.db("PokemonUsers").collection("users");
+		const user = {
+			name: req.body.name,
+			pokemonTeam: [],
+			personality: "",
+		};
+		await database.insertOne(user);
+		res.status(201).send({
+			status: "Saved",
+			message: "User has been saved!",
+			content: { name: user.name },
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({
+			error: "Something went wrong!",
+			value: error,
+		});
+	} finally {
+		await client.close();
+	}
+});
+
 connectDB();
