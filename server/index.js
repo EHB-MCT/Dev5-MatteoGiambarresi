@@ -54,4 +54,13 @@ app.post("/registerName", async (req, res) => {
 	}
 });
 
+app.get("/users", async (req, res) => {
+	try {
+		const users = await db.collection("users").find().toArray();
+		res.json(users);
+	} catch (err) {
+		console.error("Fetch error:", err);
+		res.status(500).json({ message: "Error fetching users" });
+	}
+});
 connectDB();
