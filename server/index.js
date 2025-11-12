@@ -23,21 +23,27 @@ async function connectDB() {
 app.post("/registerName", async (req, res) => {
 	console.log(req.body);
 	if (!req.body.name) {
-		res.status(400).send({
+		return res.status(400).send({
 			status: "Bad request",
 			message: "Name field is required",
 		});
-		return;
 	}
 	try {
-		await client.connect();
-		const database = client.db("PokemonUsers").collection("users");
+		const userCollection = db.collection("users");
+
+		const existingUser = await userCollection.findOne({ name: req.body.name });
+		if (existingUser) {
+			return res.status(409).send({
+				status: "Conflict",
+				message: "Username already exists. Please choose another one.",
+			});
+		}
 		const user = {
 			name: req.body.name,
 			pokemonTeam: [],
 			personality: "",
 		};
-		await database.insertOne(user);
+		await userCollection.insertOne(user);
 		res.status(201).send({
 			status: "Saved",
 			message: "User has been saved!",
@@ -49,8 +55,6 @@ app.post("/registerName", async (req, res) => {
 			error: "Something went wrong!",
 			value: error,
 		});
-	} finally {
-		await client.close();
 	}
 });
 
