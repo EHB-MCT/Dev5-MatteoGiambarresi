@@ -3,7 +3,9 @@ function TeamSelector() {
 	const [username, setUsername] = useState("");
 	useEffect(() => {
 		const userString = localStorage.getItem("user");
-		setUsername(userString);
+		const userParse = JSON.parse(userString);
+		// console.log(userParse)
+		setUsername(userParse.name);
 	}, []);
 
 	return (
