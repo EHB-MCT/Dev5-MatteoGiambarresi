@@ -34,6 +34,10 @@ function TeamSelector() {
 			setSelected(filtered);
 			console.log(filtered);
 		} else {
+			if (selected.length == 6) {
+				console.log("You can only select up to 6 Pokémon!");
+				return;
+			}
 			const updated = selected.concat(name);
 			setSelected(updated);
 			console.log(updated);
