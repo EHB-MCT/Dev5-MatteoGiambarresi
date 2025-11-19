@@ -54,6 +54,10 @@ function TeamSelector() {
 	}
 
 	function handleSubmit() {
+		if (selected.length !== 6) {
+			alert(`${6 - selected.length} more Pokemon left`);
+			return;
+		}
 		getPostData("http://localhost:3000/updateTeam", "PUT", {
 			name: username,
 			team: selected,
@@ -74,7 +78,7 @@ function TeamSelector() {
 					</button>
 				</div>
 			))}
-
+			<h1>{selected.length}/6</h1>
 			<button onClick={handleSubmit}>Submit Team</button>
 		</div>
 	);
