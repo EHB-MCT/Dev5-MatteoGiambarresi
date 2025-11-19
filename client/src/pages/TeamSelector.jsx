@@ -3,30 +3,28 @@ function TeamSelector() {
 	const [username, setUsername] = useState("");
 	const [pokemonList, setPokemonList] = useState([]);
 	const [selected, setSelected] = useState([]);
-	const pokemons = [
-		"pikachu",
-		"bulbasaur",
-		"charmander",
-		"squirtle",
-		"pidgey",
-		"rattata",
-		"jigglypuff",
-		"meowth",
-		"psyduck",
-		"machop",
-		"geodude",
-		"eevee",
-	];
+
 	useEffect(() => {
 		const userString = localStorage.getItem("user");
 		const userParse = JSON.parse(userString);
 		// console.log(userParse)
 		setUsername(userParse.name);
 	}, []);
-
 	useEffect(() => {
-		setPokemonList(pokemons);
+		async function fetchPokemons() {
+			try {
+				const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+				const data = await res.json();
+				const names = data.results.map((p) => p.name);
+				setPokemonList(names);
+			} catch (err) {
+				console.error("Error fetching Pokémon:");
+			}
+		}
+
+		fetchPokemons();
 	}, []);
+
 	function toggleSelect(event) {
 		const name = event.target.value;
 		if (selected.includes(name)) {
