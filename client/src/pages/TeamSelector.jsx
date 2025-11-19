@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 function TeamSelector() {
 	const [username, setUsername] = useState("");
 	const [pokemonList, setPokemonList] = useState([]);
@@ -29,9 +29,15 @@ function TeamSelector() {
 	}, []);
 	function toggleSelect(event) {
 		const name = event.target.value;
-		const updated = selected.concat(name);
-		setSelected(updated);
-		console.log(updated);
+		if (selected.includes(name)) {
+			const filtered = selected.filter((item) => item != name);
+			setSelected(filtered);
+			console.log(filtered);
+		} else {
+			const updated = selected.concat(name);
+			setSelected(updated);
+			console.log(updated);
+		}
 	}
 	return (
 		<div>
