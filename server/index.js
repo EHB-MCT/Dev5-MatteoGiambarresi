@@ -67,4 +67,26 @@ app.get("/users", async (req, res) => {
 		res.status(500).json({ message: "Error fetching users" });
 	}
 });
+
+app.put("/updateTeam", async (req, res) => {
+	if (!req.body.name || !req.body.team) {
+		return res.status(400).send({ message: "Name and team are required" });
+	}
+
+	try {
+		const userCollection = db.collection("users");
+		const result = await userCollection.updateOne({ name: req.body.name }, { $set: { pokemonTeam: req.body.team } });
+		if (result.matchedCount === 0) {
+			return res.status(404).send({ message: "User not found" });
+		}
+		res.status(200).send({
+			message: "Team updated successfully!",
+			team: req.body.team,
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).send({ message: "Something went wrong" });
+	}
+});
+
 connectDB();

@@ -43,6 +43,25 @@ function TeamSelector() {
 			console.log(updated);
 		}
 	}
+
+	async function getPostData(url, method, data) {
+		let resp = await fetch(url, {
+			method: method,
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(data),
+		});
+		return await resp.json();
+	}
+
+	function handleSubmit() {
+		getPostData("http://localhost:3000/updateTeam", "PUT", {
+			name: username,
+			team: selected,
+		}).then((data) => {
+			console.log(data);
+			alert(data.message);
+		});
+	}
 	return (
 		<div>
 			<h1>TeamSelector Page</h1>
@@ -55,6 +74,8 @@ function TeamSelector() {
 					</button>
 				</div>
 			))}
+
+			<button onClick={handleSubmit}>Submit Team</button>
 		</div>
 	);
 }
