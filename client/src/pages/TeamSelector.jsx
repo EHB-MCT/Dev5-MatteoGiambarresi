@@ -2,6 +2,7 @@ import { useState, useEffect, use } from "react";
 function TeamSelector() {
 	const [username, setUsername] = useState("");
 	const [pokemonList, setPokemonList] = useState([]);
+	const [selected, setSelected] = useState([]);
 	const pokemons = [
 		"pikachu",
 		"bulbasaur",
@@ -26,13 +27,23 @@ function TeamSelector() {
 	useEffect(() => {
 		setPokemonList(pokemons);
 	}, []);
-
+	function toggleSelect(event) {
+		const name = event.target.value;
+		const updated = selected.concat(name);
+		setSelected(updated);
+		console.log(updated);
+	}
 	return (
 		<div>
 			<h1>TeamSelector Page</h1>
 			<h2>{username}</h2>
 			{pokemonList.map((pokemon) => (
-				<p key={pokemon}>{pokemon}</p>
+				<div key={pokemon}>
+					<p>{pokemon}</p>
+					<button value={pokemon} onClick={toggleSelect}>
+						add
+					</button>
+				</div>
 			))}
 		</div>
 	);
