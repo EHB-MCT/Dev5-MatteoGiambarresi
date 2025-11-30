@@ -75,6 +75,7 @@ app.put("/updateTeam", async (req, res) => {
 
 	try {
 		const userCollection = db.collection("users");
+		const teamDetailsCollection = db.collection("userteamdata");
 		const result = await userCollection.updateOne({ name: req.body.name }, { $set: { pokemonTeam: req.body.team } });
 		if (result.matchedCount === 0) {
 			return res.status(404).send({ message: "User not found" });
@@ -85,7 +86,7 @@ app.put("/updateTeam", async (req, res) => {
 
 			const PokemonRes = await fetch(data.species.url);
 			const PokemonData = await PokemonRes.json();
-			const descriptionFind = PokemonData.flavor_text_entries.find((e) => e.language.name === "eng");
+			const descriptionFind = PokemonData.flavor_text_entries.find((e) => e.language.name === "en");
 			const descriptionText = descriptionFind.flavor_text;
 
 			return {
@@ -103,6 +104,11 @@ app.put("/updateTeam", async (req, res) => {
 			const pokemonData = await fetchPokemonData(pokemonName);
 			teamData.push(pokemonData);
 		}
+
+		await teamDetailsCollection.insertOne({
+			user: req.body.name,
+			teamdetails: teamData,
+		});
 		res.status(200).send({
 			message: "Team updated successfully!",
 			team: teamData,
