@@ -95,6 +95,9 @@ app.put("/updateTeam", async (req, res) => {
 				height: data.height,
 				weight: data.weight,
 				description: descriptionText,
+				attack: data.stats.find((s) => s.stat.name === "attack").base_stat,
+				defense: data.stats.find((s) => s.stat.name === "defense").base_stat,
+				speed: data.stats.find((s) => s.stat.name === "speed").base_stat,
 			};
 		}
 
