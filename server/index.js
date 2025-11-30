@@ -79,9 +79,33 @@ app.put("/updateTeam", async (req, res) => {
 		if (result.matchedCount === 0) {
 			return res.status(404).send({ message: "User not found" });
 		}
+		async function fetchPokemonData(name) {
+			const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+			const data = await res.json();
+
+			const PokemonRes = await fetch(data.species.url);
+			const PokemonData = await PokemonRes.json();
+			const descriptionFind = PokemonData.flavor_text_entries.find((e) => e.language.name === "eng");
+			const descriptionText = descriptionFind.flavor_text;
+
+			return {
+				name: name,
+				types: data.types.map((t) => t.type.name),
+				height: data.height,
+				weight: data.weight,
+				description: descriptionText,
+			};
+		}
+
+		const teamData = [];
+
+		for (let pokemonName of req.body.team) {
+			const pokemonData = await fetchPokemonData(pokemonName);
+			teamData.push(pokemonData);
+		}
 		res.status(200).send({
 			message: "Team updated successfully!",
-			team: req.body.team,
+			team: teamData,
 		});
 	} catch (err) {
 		console.error(err);
