@@ -122,6 +122,10 @@ app.put("/updateTeam", async (req, res) => {
 			const scores = {
 				Aggressive: 0,
 				Calm: 0,
+				Anxious: 0,
+				Loyal: 0,
+				Naive: 0,
+				Timid: 0,
 			};
 
 			team.forEach((poke) => {
@@ -136,6 +140,26 @@ app.put("/updateTeam", async (req, res) => {
 					const desc = poke.description.toLowerCase();
 					if (desc.includes("intimidates") || desc.includes("angry") || desc.includes("strong") || desc.includes("charges")) {
 						scores.Aggressive += 1;
+					}
+				}
+
+				if (poke.types.includes("water")) {
+					scores.Calm += 1;
+				}
+				if (poke.height >= 12) scores.Calm += 1;
+				if (poke.speed <= 50) scores.Calm += 1;
+				if (poke.attack <= 60) scores.Calm += 1;
+				if (poke.description) {
+					const desc = poke.description.toLowerCase();
+					if (
+						desc.includes("gentle") ||
+						desc.includes("calm") ||
+						desc.includes("peaceful") ||
+						desc.includes("serene") ||
+						desc.includes("tranquil") ||
+						desc.includes("protective")
+					) {
+						scores.Calm += 1;
 					}
 				}
 			});
