@@ -129,21 +129,22 @@ app.put("/updateTeam", async (req, res) => {
 			};
 
 			team.forEach((poke) => {
+				//Aggresive checks
 				if (poke.attack >= 70) {
 					scores.Aggressive += 1;
 				}
 				if (poke.height >= 10) {
 					scores.Aggressive += 1;
 				}
-				if (poke.types.includes("fire")) scores.Aggressive += 1;
+				if (poke.types.includes("fire") || poke.types.includes("dragon") || poke.types.includes("electric")) scores.Aggressive += 1;
 				if (poke.description) {
 					const desc = poke.description.toLowerCase();
 					if (desc.includes("intimidates") || desc.includes("angry") || desc.includes("strong") || desc.includes("charges")) {
 						scores.Aggressive += 1;
 					}
 				}
-
-				if (poke.types.includes("water")) {
+				//Calm checks
+				if (poke.types.includes("water") || poke.types.includes("psychic") || poke.types.includes("normal")) {
 					scores.Calm += 1;
 				}
 				if (poke.height >= 12) scores.Calm += 1;
