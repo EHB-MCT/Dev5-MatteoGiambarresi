@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router";
+
 function TeamSelector() {
+	const navigate = useNavigate();
 	const [username, setUsername] = useState("");
 	const [pokemonList, setPokemonList] = useState([]);
 	const [selected, setSelected] = useState([]);
@@ -62,6 +65,7 @@ function TeamSelector() {
 		}).then((data) => {
 			console.log(data);
 			alert(data.message);
+			navigate("/questions");
 		});
 	}
 	return (

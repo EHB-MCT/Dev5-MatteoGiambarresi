@@ -127,7 +127,6 @@ app.put("/updateTeam", async (req, res) => {
 				Naive: 0,
 				Timid: 0,
 			};
-
 			team.forEach((poke) => {
 				//Aggresive checks
 				if (poke.attack >= 70) {
@@ -163,8 +162,8 @@ app.put("/updateTeam", async (req, res) => {
 						scores.Calm += 1;
 					}
 				}
-				//Anxious checks
 
+				//Anxious checks
 				if (poke.speed >= 80) scores.Anxious += 1;
 				if (poke.types.includes("ghost") || poke.types.includes("bug") || poke.types.includes("ice")) scores.Anxious += 1;
 				if (poke.attack <= 40) scores.Anxious += 1;
