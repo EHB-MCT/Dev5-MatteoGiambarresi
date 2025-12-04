@@ -121,7 +121,7 @@ app.put("/updateTeam", async (req, res) => {
 		function calculatePersonality(team) {
 			const scores = {
 				Aggressive: 0,
-				Calm: 8,
+				Calm: 0,
 			};
 
 			team.forEach((poke) => {
@@ -139,13 +139,15 @@ app.put("/updateTeam", async (req, res) => {
 			};
 		}
 		console.log(calculatePersonality(teamData));
-		const results = calculatePersonality(teamData)
+		const results = calculatePersonality(teamData);
 
 		await personalityCollection.insertOne({
 			user: req.body.name,
 			personality: results.winner,
 			scores: results.scores,
 		});
+
+		await userCollection.updateOne({ name: req.body.name }, { $set: { personality: results.winner } });
 	} catch (err) {
 		console.error(err);
 		res.status(500).send({ message: "Something went wrong" });
