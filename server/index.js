@@ -76,6 +76,7 @@ app.put("/updateTeam", async (req, res) => {
 	try {
 		const userCollection = db.collection("users");
 		const teamDetailsCollection = db.collection("userteamdata");
+		const personalityCollection = db.collection("personalityanalysis");
 		const result = await userCollection.updateOne({ name: req.body.name }, { $set: { pokemonTeam: req.body.team } });
 		if (result.matchedCount === 0) {
 			return res.status(404).send({ message: "User not found" });
@@ -138,6 +139,13 @@ app.put("/updateTeam", async (req, res) => {
 			};
 		}
 		console.log(calculatePersonality(teamData));
+		const results = calculatePersonality(teamData)
+
+		await personalityCollection.insertOne({
+			user: req.body.name,
+			personality: results.winner,
+			scores: results.scores,
+		});
 	} catch (err) {
 		console.error(err);
 		res.status(500).send({ message: "Something went wrong" });
