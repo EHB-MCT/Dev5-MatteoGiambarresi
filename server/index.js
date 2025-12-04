@@ -113,10 +113,6 @@ app.put("/updateTeam", async (req, res) => {
 			user: req.body.name,
 			teamdetails: teamData,
 		});
-		res.status(200).send({
-			message: "Team updated successfully!",
-			team: teamData,
-		});
 
 		function calculatePersonality(team) {
 			const scores = {
@@ -201,6 +197,11 @@ app.put("/updateTeam", async (req, res) => {
 		});
 
 		await userCollection.updateOne({ name: req.body.name }, { $set: { personality: results.winner } });
+		res.status(200).send({
+			message: "Team updated successfully!",
+			team: teamData,
+			personality: results.winner,
+		});
 	} catch (err) {
 		console.error(err);
 		res.status(500).send({ message: "Something went wrong" });

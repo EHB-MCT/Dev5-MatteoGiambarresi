@@ -59,15 +59,19 @@ function TeamSelector() {
 			alert(`${6 - selected.length} more Pokemon left`);
 			return;
 		}
+
 		getPostData("http://localhost:3000/updateTeam", "PUT", {
 			name: username,
 			team: selected,
 		}).then((data) => {
-			console.log(data);
 			alert(data.message);
+			if (data.personality) {
+				localStorage.setItem("personality", JSON.stringify(data.personality));
+			}
 			navigate("/questions");
 		});
 	}
+
 	return (
 		<div>
 			<h1>TeamSelector Page</h1>
