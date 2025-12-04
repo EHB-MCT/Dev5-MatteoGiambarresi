@@ -163,6 +163,25 @@ app.put("/updateTeam", async (req, res) => {
 						scores.Calm += 1;
 					}
 				}
+				//Anxious checks
+
+				if (poke.speed >= 80) scores.Anxious += 1;
+				if (poke.types.includes("ghost") || poke.types.includes("bug") || poke.types.includes("ice")) scores.Anxious += 1;
+				if (poke.attack <= 40) scores.Anxious += 1;
+				if (poke.height <= 8) scores.Anxious += 1;
+				if (poke.description) {
+					const desc = poke.description.toLowerCase();
+					if (
+						desc.includes("timid") ||
+						desc.includes("nervous") ||
+						desc.includes("shy") ||
+						desc.includes("jumps") ||
+						desc.includes("cautious") ||
+						desc.includes("fearful")
+					) {
+						scores.Anxious += 1;
+					}
+				}
 			});
 			const winner = Object.keys(scores).reduce((a, b) => {
 				if (scores[a] > scores[b]) return a;
