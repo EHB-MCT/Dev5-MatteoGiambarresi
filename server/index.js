@@ -116,10 +116,27 @@ app.put("/updateTeam", async (req, res) => {
 			message: "Team updated successfully!",
 			team: teamData,
 		});
+
+		function calculatePersonality(team) {
+			let scores = {
+				Aggressive: 0,
+			};
+
+			team.forEach((poke) => {
+				if (poke.attack >= 70) {
+					scores.Aggressive += 2;
+				}
+			});
+
+			return {
+				winner: "Aggressive",
+				scores: scores,
+			};
+		}
+		console.log(calculatePersonality(teamData));
 	} catch (err) {
 		console.error(err);
 		res.status(500).send({ message: "Something went wrong" });
 	}
 });
-
 connectDB();
