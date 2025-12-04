@@ -129,8 +129,8 @@ app.put("/updateTeam", async (req, res) => {
 			});
 
 			return {
-				winner: "Aggressive",
-				scores: scores,
+				winner: Object.keys(scores),
+				scores: Object.values(scores),
 			};
 		}
 		console.log(calculatePersonality(teamData));
