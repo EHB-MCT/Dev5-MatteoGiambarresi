@@ -126,7 +126,17 @@ app.put("/updateTeam", async (req, res) => {
 
 			team.forEach((poke) => {
 				if (poke.attack >= 70) {
-					scores.Aggressive += 2;
+					scores.Aggressive += 1;
+				}
+				if (poke.height >= 10) {
+					scores.Aggressive += 1;
+				}
+				if (poke.types.includes("fire")) scores.Aggressive += 1;
+				if (poke.description) {
+					const desc = poke.description.toLowerCase();
+					if (desc.includes("intimidates") || desc.includes("angry") || desc.includes("strong") || desc.includes("charges")) {
+						scores.Aggressive += 1;
+					}
 				}
 			});
 			const winner = Object.keys(scores).reduce((a, b) => {
