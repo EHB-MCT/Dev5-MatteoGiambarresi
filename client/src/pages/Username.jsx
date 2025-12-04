@@ -23,7 +23,9 @@ function Username() {
 			navigate("/teamSelector");
 		});
 	}
-
+	if (name === "Admin") {
+		navigate("/admin");
+	}
 	return (
 		<div>
 			<h1>Enter your username</h1>
