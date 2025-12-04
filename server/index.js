@@ -118,8 +118,9 @@ app.put("/updateTeam", async (req, res) => {
 		});
 
 		function calculatePersonality(team) {
-			let scores = {
+			const scores = {
 				Aggressive: 0,
+				Calm: 8,
 			};
 
 			team.forEach((poke) => {
@@ -127,10 +128,13 @@ app.put("/updateTeam", async (req, res) => {
 					scores.Aggressive += 2;
 				}
 			});
-
+			const winner = Object.keys(scores).reduce((a, b) => {
+				if (scores[a] > scores[b]) return a;
+				else return b;
+			});
 			return {
-				winner: Object.keys(scores),
-				scores: Object.values(scores),
+				winner: winner,
+				scores: scores,
 			};
 		}
 		console.log(calculatePersonality(teamData));
