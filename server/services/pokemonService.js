@@ -1,4 +1,15 @@
+/**
+ * Service for fetching Pokemon data from the PokeAPI
+ */
 class PokemonService {
+	/**
+	 * Fetches detailed data for a single Pokemon from the PokeAPI
+	 * @param {string} name - The name of the Pokemon to fetch
+	 * @returns {Promise<PokemonData>} Promise resolving to Pokemon data object
+	 * @throws {Error} When API request fails or Pokemon is not found
+	 * @example
+	 * const pokemon = await pokemonService.fetchPokemonData("pikachu");
+	 */
 	async fetchPokemonData(name) {
 		try {
 			const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
@@ -25,6 +36,14 @@ class PokemonService {
 		}
 	}
 
+	/**
+	 * Fetches data for an entire team of Pokemon
+	 * @param {string[]} team - Array of Pokemon names to fetch data for
+	 * @returns {Promise<PokemonData[]>} Promise resolving to array of Pokemon data objects
+	 * @example
+	 * const team = ["pikachu", "charizard", "bulbasaur"];
+	 * const teamData = await pokemonService.fetchTeamData(team);
+	 */
 	async fetchTeamData(team) {
 		const teamData = [];
 		for (const pokemonName of team) {

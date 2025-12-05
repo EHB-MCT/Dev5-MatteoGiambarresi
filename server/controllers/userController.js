@@ -1,10 +1,32 @@
+/**
+ * Controller class for handling user-related HTTP requests
+ * Implements dependency injection for services and repositories
+ */
 class UserController {
+	/**
+	 * Creates an instance of UserController
+	 * @param {UserRepository} userRepository - Repository for user data operations
+	 * @param {PokemonService} pokemonService - Service for Pokemon API operations
+	 * @param {PersonalityService} personalityService - Service for personality analysis
+	 */
 	constructor(userRepository, pokemonService, personalityService) {
+		/** @type {UserRepository} Repository for user data operations */
 		this.userRepository = userRepository;
+		/** @type {PokemonService} Service for Pokemon API operations */
 		this.pokemonService = pokemonService;
+		/** @type {PersonalityService} Service for personality analysis */
 		this.personalityService = personalityService;
 	}
 
+	/**
+	 * Handles user registration requests
+	 * @param {Request} req - Express request object
+	 * @param {Response} res - Express response object
+	 * @returns {Promise<void>} Promise that resolves when response is sent
+	 * @example
+	 * POST /registerName
+	 * Body: { "name": "John" }
+	 */
 	async registerUser(req, res) {
 		if (!req.body.name) {
 			return res.status(400).send({
@@ -44,6 +66,14 @@ class UserController {
 		}
 	}
 
+	/**
+	 * Handles requests to retrieve all users
+	 * @param {Request} req - Express request object
+	 * @param {Response} res - Express response object
+	 * @returns {Promise<void>} Promise that resolves when response is sent
+	 * @example
+	 * GET /users
+	 */
 	async getAllUsers(req, res) {
 		try {
 			const users = await this.userRepository.findAll();
@@ -54,6 +84,20 @@ class UserController {
 		}
 	}
 
+	/**
+	 * Handles requests to update a user's Pokemon team and related data
+	 * @param {Request} req - Express request object
+	 * @param {Response} res - Express response object
+	 * @returns {Promise<void>} Promise that resolves when response is sent
+	 * @example
+	 * PUT /updateTeam
+	 * Body: { 
+	 *   "name": "John", 
+	 *   "team": ["pikachu", "charizard"],
+	 *   "timer": "02:30",
+	 *   "clicks": 25
+	 * }
+	 */
 	async updateTeam(req, res) {
 		if (!req.body.name || !req.body.team) {
 			return res.status(400).send({ message: "Name and team are required" });
