@@ -13,15 +13,12 @@ async function connectDB() {
 	try {
 		await client.connect();
 		db = client.db("PokemonUsers");
-		console.log("Connected to MongoDB");
-		app.listen(3000, () => console.log("Server running on port 3000"));
 	} catch (err) {
 		console.error("Error connecting to MongoDB:", err);
 	}
 }
 
 app.post("/registerName", async (req, res) => {
-	console.log(req.body);
 	if (!req.body.name) {
 		return res.status(400).send({
 			status: "Bad request",
@@ -43,6 +40,7 @@ app.post("/registerName", async (req, res) => {
 			pokemonTeam: [],
 			personality: "",
 			timer: "",
+			clicks: 0,
 		};
 		await userCollection.insertOne(user);
 		res.status(201).send({
@@ -51,7 +49,6 @@ app.post("/registerName", async (req, res) => {
 			content: { name: user.name },
 		});
 	} catch (error) {
-		console.log(error);
 		res.status(500).send({
 			error: "Something went wrong!",
 			value: error,
@@ -80,6 +77,7 @@ app.put("/updateTeam", async (req, res) => {
 		const personalityCollection = db.collection("personalityanalysis");
 		const result = await userCollection.updateOne({ name: req.body.name }, { $set: { pokemonTeam: req.body.team } });
 		await userCollection.updateOne({ name: req.body.name }, { $set: { timer: req.body.timer } });
+		await userCollection.updateOne({ name: req.body.name }, { $set: { clicks: req.body.clicks } });
 		if (result.matchedCount === 0) {
 			return res.status(404).send({ message: "User not found" });
 		}
@@ -189,7 +187,6 @@ app.put("/updateTeam", async (req, res) => {
 				scores: scores,
 			};
 		}
-		console.log(calculatePersonality(teamData));
 		const results = calculatePersonality(teamData);
 
 		await personalityCollection.insertOne({

@@ -24,6 +24,8 @@ function UserProfile() {
 					<h3>{user.name}</h3>
 					<p>Team: {user.pokemonTeam.join(" ")}</p>
 					<p>Personality: {user.personality}</p>
+					<p>amount of clicks: {user.clicks}</p>
+					<p>timer: {user.timer}</p>
 				</div>
 			))}
 		</div>

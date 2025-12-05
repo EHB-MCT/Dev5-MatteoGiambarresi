@@ -3,7 +3,6 @@ import { useState } from "react";
 function Username() {
 	const navigate = useNavigate();
 	const [name, setName] = useState("");
-	// console.log(name);
 	async function getPostData(url, method, data) {
 		let resp = await fetch(url, {
 			method: method,
@@ -17,7 +16,6 @@ function Username() {
 
 	function handleSubmit() {
 		getPostData("http://localhost:3000/registerName", "POST", { name }).then((data) => {
-			console.log(data);
 			alert(data.message);
 			localStorage.setItem("user", JSON.stringify({ name: data.content.name }));
 			navigate("/teamSelector");

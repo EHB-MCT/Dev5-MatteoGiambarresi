@@ -8,11 +8,11 @@ function TeamSelector() {
 	const [selected, setSelected] = useState([]);
 	const [seconds, setSeconds] = useState(1);
 	const [minutes, setMinutes] = useState(0);
+	const [click, setClick] = useState(0);
 
 	useEffect(() => {
 		const userString = localStorage.getItem("user");
 		const userParse = JSON.parse(userString);
-		// console.log(userParse)
 		setUsername(userParse.name);
 	}, []);
 	useEffect(() => {
@@ -44,22 +44,22 @@ function TeamSelector() {
 		return () => clearTimeout(timer);
 	}, [seconds]);
 
-	console.log(seconds);
-	console.log(minutes);
+
 	function toggleSelect(event) {
+		setClick(click + 1);
+
 		const name = event.target.value;
 		if (selected.includes(name)) {
 			const filtered = selected.filter((item) => item != name);
 			setSelected(filtered);
-			console.log(filtered);
+
 		} else {
 			if (selected.length == 6) {
-				console.log("You can only select up to 6 Pokémon!");
+
 				return;
 			}
 			const updated = selected.concat(name);
 			setSelected(updated);
-			console.log(updated);
 		}
 	}
 	const finaltimer = () => {
@@ -68,7 +68,6 @@ function TeamSelector() {
 		return `${m}:${s}`;
 	};
 
-	console.log(finaltimer());
 	async function getPostData(url, method, data) {
 		let resp = await fetch(url, {
 			method: method,
@@ -88,6 +87,7 @@ function TeamSelector() {
 			name: username,
 			team: selected,
 			timer: finaltimer(),
+			clicks: click
 		}).then((data) => {
 			alert(data.message);
 			if (data.personality) {

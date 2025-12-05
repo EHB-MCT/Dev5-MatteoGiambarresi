@@ -8,10 +8,8 @@ function Questions() {
 	useEffect(() => {
 		const userPersonality = localStorage.getItem("personality");
 		setPersonality(userPersonality);
-		console.log(userPersonality);
 		if (userPersonality === `"Aggressive"`) {
 			setQuestions(agressiveQuestions);
-			console.log(setQuestions(agressiveQuestions));
 		} else if (userPersonality === `"Anxious"`) {
 			setQuestions(anxiousQuestions);
 		} else if (userPersonality === `"Calm"`) {
