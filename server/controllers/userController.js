@@ -85,6 +85,28 @@ class UserController {
 	}
 
 	/**
+	 * Handles requests to retrieve all users' teams
+	 * @param {Request} req - Express request object
+	 * @param {Response} res - Express response object
+	 * @returns {Promise<void>} Promise that resolves when response is sent
+	 * @example
+	 * GET /team
+	 */
+	async getAllTeams(req, res) {
+		try {
+			const users = await this.userRepository.findAll();
+			const teams = users.map(user => ({
+				name: user.name,
+				pokemonTeam: user.pokemonTeam || []
+			}));
+			res.json(teams);
+		} catch (err) {
+			console.error("Fetch teams error:", err);
+			res.status(500).json({ message: "Error fetching teams" });
+		}
+	}
+
+	/**
 	 * Handles requests to update a user's Pokemon team and related data
 	 * @param {Request} req - Express request object
 	 * @param {Response} res - Express response object

@@ -15,13 +15,19 @@ const createUserRoutes = (userController) => {
 	 * Registers a new user with the provided name
 	 */
 	router.post("/registerName", userController.registerUser.bind(userController));
-	
+
 	/**
 	 * GET /users
 	 * Retrieves all users from the database
 	 */
 	router.get("/users", userController.getAllUsers.bind(userController));
-	
+
+	/**
+	 * GET /team
+	 * Retrieves all users' teams with their details
+	 */
+
+	router.get("/team", userController.getAllTeams.bind(userController));
 	/**
 	 * PUT /updateTeam
 	 * Updates a user's Pokemon team and calculates personality

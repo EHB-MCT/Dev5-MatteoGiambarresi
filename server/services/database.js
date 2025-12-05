@@ -14,7 +14,6 @@ class DatabaseService {
 		/** @type {Db|null} MongoDB database instance */
 		this.db = null;
 	}
-
 	/**
 	 * Establishes connection to MongoDB database
 	 * @param {string} uri - MongoDB connection URI
