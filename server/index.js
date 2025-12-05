@@ -42,6 +42,7 @@ app.post("/registerName", async (req, res) => {
 			name: req.body.name,
 			pokemonTeam: [],
 			personality: "",
+			timer: "",
 		};
 		await userCollection.insertOne(user);
 		res.status(201).send({
@@ -78,6 +79,7 @@ app.put("/updateTeam", async (req, res) => {
 		const teamDetailsCollection = db.collection("userteamdata");
 		const personalityCollection = db.collection("personalityanalysis");
 		const result = await userCollection.updateOne({ name: req.body.name }, { $set: { pokemonTeam: req.body.team } });
+		await userCollection.updateOne({ name: req.body.name }, { $set: { timer: req.body.timer } });
 		if (result.matchedCount === 0) {
 			return res.status(404).send({ message: "User not found" });
 		}

@@ -6,6 +6,8 @@ function TeamSelector() {
 	const [username, setUsername] = useState("");
 	const [pokemonList, setPokemonList] = useState([]);
 	const [selected, setSelected] = useState([]);
+	const [seconds, setSeconds] = useState(1);
+	const [minutes, setMinutes] = useState(0);
 
 	useEffect(() => {
 		const userString = localStorage.getItem("user");
@@ -28,6 +30,22 @@ function TeamSelector() {
 		fetchPokemons();
 	}, []);
 
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setSeconds((prevCount) => {
+				if (prevCount + 1 === 60) {
+					setMinutes((prevMinutes) => prevMinutes + 1 / 2);
+					return 0;
+				}
+				return prevCount + 1;
+			});
+		}, 1000);
+
+		return () => clearTimeout(timer);
+	}, [seconds]);
+
+	console.log(seconds);
+	console.log(minutes);
 	function toggleSelect(event) {
 		const name = event.target.value;
 		if (selected.includes(name)) {
@@ -44,7 +62,13 @@ function TeamSelector() {
 			console.log(updated);
 		}
 	}
+	const finaltimer = () => {
+		const m = minutes < 10 ? `0${minutes}` : minutes;
+		const s = seconds < 10 ? `0${seconds}` : seconds;
+		return `${m}:${s}`;
+	};
 
+	console.log(finaltimer());
 	async function getPostData(url, method, data) {
 		let resp = await fetch(url, {
 			method: method,
@@ -63,12 +87,14 @@ function TeamSelector() {
 		getPostData("http://localhost:3000/updateTeam", "PUT", {
 			name: username,
 			team: selected,
+			timer: finaltimer(),
 		}).then((data) => {
 			alert(data.message);
 			if (data.personality) {
 				localStorage.setItem("personality", JSON.stringify(data.personality));
 			}
 			navigate("/questions");
+			return () => clearTimeout(timer);
 		});
 	}
 
