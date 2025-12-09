@@ -95,9 +95,9 @@ class UserController {
 	async getAllTeams(req, res) {
 		try {
 			const users = await this.userRepository.findAll();
-			const teams = users.map(user => ({
+			const teams = users.map((user) => ({
 				name: user.name,
-				pokemonTeam: user.pokemonTeam || []
+				pokemonTeam: user.pokemonTeam || [],
 			}));
 			res.json(teams);
 		} catch (err) {
@@ -113,8 +113,8 @@ class UserController {
 	 * @returns {Promise<void>} Promise that resolves when response is sent
 	 * @example
 	 * PUT /updateTeam
-	 * Body: { 
-	 *   "name": "John", 
+	 * Body: {
+	 *   "name": "John",
 	 *   "team": ["pikachu", "charizard"],
 	 *   "timer": "02:30",
 	 *   "clicks": 25
@@ -164,6 +164,28 @@ class UserController {
 			});
 		} catch (err) {
 			console.error(err);
+			res.status(500).send({ message: "Something went wrong" });
+		}
+	}
+
+	async pokemonRanking(req, res) {
+		try {
+			const { pokemon } = req.body;
+			if (!pokemon) {
+				return res.status(400).send({ message: "Pokemon name is required" });
+			}
+
+			await this.userRepository.updatePokemonRanking(pokemon);
+
+			const collection = this.userRepository.db.getCollection("pokemonrankings");
+			const rankings = await collection.find().toArray();
+
+			res.status(200).send({
+				message: `Updated ranking for ${pokemon}`,
+				currentRankings: rankings,
+			});
+		} catch (err) {
+			console.error("Test ranking error:", err);
 			res.status(500).send({ message: "Something went wrong" });
 		}
 	}

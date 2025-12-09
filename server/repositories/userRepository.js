@@ -122,6 +122,23 @@ class UserRepository {
 		const collection = this.db.getCollection("personalityanalysis");
 		return await collection.insertOne(personalityData);
 	}
+
+	async updatePokemonRanking(pokemonName) {
+		const collection = this.db.getCollection("pokemonrankings");
+		const existing = await collection.findOne({ pokemon: pokemonName });
+		
+		if (existing) {
+			return await collection.updateOne(
+				{ pokemon: pokemonName },
+				{ $inc: { selectionCount: 1 } }
+			);
+		} else {
+			return await collection.insertOne({
+				pokemon: pokemonName,
+				selectionCount: 1
+			});
+		}
+	}
 }
 
 module.exports = UserRepository;
