@@ -198,6 +198,16 @@ class UserController {
 			res.status(500).send({ message: "Something went wrong" });
 		}
 	}
+
+	async getTop5Pokemon(req, res) {
+		try {
+			const top5 = await this.userRepository.getTop5Pokemon();
+			res.status(200).json(top5);
+		} catch (err) {
+			console.error("Get top 5 Pokemon error:", err);
+			res.status(500).send({ message: "Something went wrong" });
+		}
+	}
 }
 
 module.exports = UserController;

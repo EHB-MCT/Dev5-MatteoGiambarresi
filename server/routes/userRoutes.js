@@ -40,6 +40,12 @@ const createUserRoutes = (userController) => {
 	 */
 	router.post("/pokemonranking", userController.pokemonRanking.bind(userController));
 
+	/**
+	 * GET /top5pokemon
+	 * Retrieves top 5 most selected Pokemon
+	 */
+	router.get("/top5pokemon", userController.getTop5Pokemon.bind(userController));
+
 	return router;
 };
 

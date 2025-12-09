@@ -146,6 +146,11 @@ class UserRepository {
 			});
 		}
 	}
+
+	async getTop5Pokemon() {
+		const collection = this.db.getCollection("pokemonrankings");
+		return await collection.find().sort({ selectionCount: -1 }).limit(5).toArray();
+	}
 }
 
 module.exports = UserRepository;
