@@ -199,6 +199,15 @@ class UserController {
 		}
 	}
 
+	/**
+	 * Handles requests to retrieve top 5 most selected Pokemon
+	 * @param {Request} req - Express request object
+	 * @param {Response} res - Express response object
+	 * @returns {Promise<void>} Promise that resolves when response is sent
+	 * @example
+	 * GET /top5pokemon
+	 * Response: [{ pokemon: "pikachu", selectionCount: 15 }, ...]
+	 */
 	async getTop5Pokemon(req, res) {
 		try {
 			const top5 = await this.userRepository.getTop5Pokemon();

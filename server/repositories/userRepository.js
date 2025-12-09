@@ -147,6 +147,13 @@ class UserRepository {
 		}
 	}
 
+	/**
+	 * Retrieves the top 5 most selected Pokemon from rankings
+	 * @returns {Promise<PokemonRanking[]>} Promise resolving to array of top 5 Pokemon rankings
+	 * @example
+	 * const top5 = await userRepository.getTop5Pokemon();
+	 * // Returns: [{ pokemon: "pikachu", selectionCount: 15 }, ...]
+	 */
 	async getTop5Pokemon() {
 		const collection = this.db.getCollection("pokemonrankings");
 		return await collection.find().sort({ selectionCount: -1 }).limit(5).toArray();
