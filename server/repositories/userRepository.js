@@ -123,6 +123,13 @@ class UserRepository {
 		return await collection.insertOne(personalityData);
 	}
 
+	/**
+	 * Updates Pokemon selection count in rankings
+	 * @param {string} pokemonName - Name of the Pokemon to update
+	 * @returns {Promise<UpdateResult|InsertOneResult>} Promise resolving to MongoDB operation result
+	 * @example
+	 * await userRepository.updatePokemonRanking("pikachu");
+	 */
 	async updatePokemonRanking(pokemonName) {
 		const collection = this.db.getCollection("pokemonrankings");
 		const existing = await collection.findOne({ pokemon: pokemonName });

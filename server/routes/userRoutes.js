@@ -34,6 +34,10 @@ const createUserRoutes = (userController) => {
 	 */
 	router.put("/updateTeam", userController.updateTeam.bind(userController));
 
+	/**
+	 * POST /pokemonranking
+	 * Updates Pokemon selection count in rankings
+	 */
 	router.post("/pokemonranking", userController.pokemonRanking.bind(userController));
 
 	return router;

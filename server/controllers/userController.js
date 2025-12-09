@@ -168,6 +168,15 @@ class UserController {
 		}
 	}
 
+	/**
+	 * Handles Pokemon ranking requests
+	 * @param {Request} req - Express request object
+	 * @param {Response} res - Express response object
+	 * @returns {Promise<void>} Promise that resolves when response is sent
+	 * @example
+	 * POST /pokemonranking
+	 * Body: { "pokemon": "pikachu" }
+	 */
 	async pokemonRanking(req, res) {
 		try {
 			const { pokemon } = req.body;
