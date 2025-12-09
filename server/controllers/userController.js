@@ -133,7 +133,7 @@ class UserController {
 				return res.status(404).send({ message: "User not found" });
 			}
 
-	await Promise.all([
+			await Promise.all([
 				this.userRepository.updateTeam(name, team),
 				this.userRepository.updateTimer(name, timer),
 				this.userRepository.updateClicks(name, clicks),
@@ -150,7 +150,7 @@ class UserController {
 				teamdetails: teamData,
 			});
 
-			const personalityResults = this.personalityService.calculatePersonality(teamData);
+			const personalityResults = this.personalityService.calculatePersonality(teamData, clicks);
 
 			await Promise.all([
 				this.userRepository.savePersonalityAnalysis({

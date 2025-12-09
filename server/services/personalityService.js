@@ -14,6 +14,7 @@ class PersonalityService {
 			Aggressive: {
 				attack: { min: 70, points: 1 },
 				height: { min: 10, points: 1 },
+				clicks: { min: 30, max: 60, points: 1 },
 				types: ["fire", "dragon", "electric"],
 				descriptions: ["intimidates", "angry", "strong", "charges"]
 			},
@@ -21,6 +22,7 @@ class PersonalityService {
 				attack: { max: 60, points: 1 },
 				height: { min: 12, points: 1 },
 				speed: { max: 50, points: 1 },
+				clicks: { min: 10, max: 40, points: 1 },
 				types: ["water", "psychic", "normal"],
 				descriptions: ["gentle", "calm", "peaceful", "serene", "tranquil", "protective"]
 			},
@@ -28,18 +30,21 @@ class PersonalityService {
 				attack: { max: 40, points: 1 },
 				height: { max: 8, points: 1 },
 				speed: { min: 80, points: 1 },
+				clicks: { min: 50, points: 1 },
 				types: ["ghost", "bug", "ice"],
 				descriptions: ["timid", "nervous", "shy", "jumps", "cautious", "fearful"]
 			},
 			Loyal: {
 				attack: { min: 50, max: 80, points: 1 },
 				height: { min: 8, max: 15, points: 1 },
+				clicks: { max: 15, points: 1 },
 				types: ["normal", "fighting", "fairy"],
 				descriptions: ["loyal", "protective", "devoted", "faithful", "guardian"]
 			},
 			Naive: {
 				attack: { min: 40, max: 70, points: 1 },
 				height: { min: 5, max: 12, points: 1 },
+				clicks: { min: 20, max: 45, points: 1 },
 				types: ["normal", "fairy", "psychic"],
 				descriptions: ["innocent", "curious", "playful", "friendly", "gentle"]
 			},
@@ -47,6 +52,7 @@ class PersonalityService {
 				attack: { max: 50, points: 1 },
 				height: { max: 10, points: 1 },
 				speed: { min: 60, points: 1 },
+				clicks: { min: 60, points: 1 },
 				types: ["psychic", "ghost", "fairy"],
 				descriptions: ["shy", "timid", "nervous", "cautious", "fearful"]
 			}
@@ -58,9 +64,9 @@ class PersonalityService {
 	 * @param {PokemonData[]} team - Array of Pokemon objects with stats and descriptions
 	 * @returns {PersonalityResult} Object containing the winning personality and all scores
 	 * @example
-	 * const result = personalityService.calculatePersonality(teamData);
+	 * const result = personalityService.calculatePersonality(teamData, 25);
 	 */
-	calculatePersonality(team) {
+	calculatePersonality(team, clicks = 0) {
 		/** @type {Object.<string, number>} */
 		const scores = Object.keys(this.personalityConfigs).reduce((acc, personality) => {
 			acc[personality] = 0;
@@ -69,7 +75,7 @@ class PersonalityService {
 
 		team.forEach((pokemon) => {
 			Object.keys(this.personalityConfigs).forEach(personality => {
-				scores[personality] += this.calculatePersonalityScore(pokemon, personality);
+				scores[personality] += this.calculatePersonalityScore(pokemon, personality, clicks);
 			});
 		});
 
@@ -89,10 +95,10 @@ class PersonalityService {
 	 * @param {string} personality - The personality type to calculate score for
 	 * @returns {number} The score contribution for this Pokemon and personality combination
 	 * @example
-	 * const score = personalityService.calculatePersonalityScore(pokemon, "Aggressive");
+	 * const score = personalityService.calculatePersonalityScore(pokemon, "Aggressive", 25);
 	 * // Returns 3 if Pokemon matches all aggressive criteria
 	 */
-	calculatePersonalityScore(pokemon, personality) {
+	calculatePersonalityScore(pokemon, personality, clicks = 0) {
 		const config = this.personalityConfigs[personality];
 		let score = 0;
 
@@ -120,6 +126,15 @@ class PersonalityService {
 			}
 			if (config.speed.max !== undefined && pokemon.speed <= config.speed.max) {
 				score += config.speed.points;
+			}
+		}
+
+		if (config.clicks) {
+			if (config.clicks.min !== undefined && clicks >= config.clicks.min) {
+				score += config.clicks.points;
+			}
+			if (config.clicks.max !== undefined && clicks <= config.clicks.max) {
+				score += config.clicks.points;
 			}
 		}
 
