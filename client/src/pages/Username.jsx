@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 function Username() {
 	const navigate = useNavigate();
 	const [name, setName] = useState("");
@@ -21,9 +21,11 @@ function Username() {
 			navigate("/teamSelector");
 		});
 	}
-	if (name === "Admin") {
-		navigate("/admin");
-	}
+	useEffect(() => {
+		if (name === "Admin") {
+			navigate("/admin");
+		}
+	}, [name, navigate]);
 	return (
 		<div>
 			<h1>Enter your username</h1>
