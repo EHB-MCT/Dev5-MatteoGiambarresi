@@ -133,11 +133,15 @@ class UserController {
 				return res.status(404).send({ message: "User not found" });
 			}
 
-			await Promise.all([
+	await Promise.all([
 				this.userRepository.updateTeam(name, team),
 				this.userRepository.updateTimer(name, timer),
 				this.userRepository.updateClicks(name, clicks),
 			]);
+
+			for (const pokemon of team) {
+				await this.userRepository.updatePokemonRanking(pokemon);
+			}
 
 			const teamData = await this.pokemonService.fetchTeamData(team);
 
