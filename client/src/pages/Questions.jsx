@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { aggressiveQuestions, anxiousQuestions, calmQuestions } from "../constants/constants";
+import { aggressiveQuestions, anxiousQuestions, calmQuestions, loyalQuestions, naiveQuestions, timidQuestions } from "../constants/constants";
 
 function Questions() {
 	const [personality, setPersonality] = useState("");
@@ -18,6 +18,12 @@ function Questions() {
 			setQuestions(anxiousQuestions);
 		} else if (userPersonality === `"Calm"`) {
 			setQuestions(calmQuestions);
+		} else if (userPersonality === `"Loyal"`) {
+			setQuestions(loyalQuestions);
+		} else if (userPersonality === `"Naive"`) {
+			setQuestions(naiveQuestions);
+		} else if (userPersonality === `"Timid"`) {
+			setQuestions(timidQuestions);
 		} else {
 			setQuestions(aggressiveQuestions);
 		}
