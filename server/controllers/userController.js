@@ -221,6 +221,44 @@ class UserController {
 			res.status(500).send({ message: "Something went wrong" });
 		}
 	}
+
+	async submitAnswers(req, res) {
+		try {
+			const { username, personality, answers } = req.body;
+
+			if (!username || !personality || !answers) {
+				return res.status(400).send({
+					status: "Bad request",
+					message: "Username, personality, and answers are required",
+				});
+			}
+
+			const yesCount = answers.filter(answer => answer === 'yes').length;
+			const noCount = answers.filter(answer => answer === 'no').length;
+
+			const answersData = {
+				username,
+				personality,
+				answers,
+				yesCount,
+				noCount,
+			};
+
+			await this.userRepository.saveUserAnswers(answersData);
+
+			res.status(201).send({
+				status: "Saved",
+				message: "Answers have been saved successfully!",
+				content: answersData,
+			});
+		} catch (error) {
+			console.error("Submit answers error:", error);
+			res.status(500).send({
+				error: "Something went wrong while saving answers!",
+				value: error,
+			});
+		}
+	}
 }
 
 module.exports = UserController;

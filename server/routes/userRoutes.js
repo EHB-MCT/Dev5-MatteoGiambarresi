@@ -46,6 +46,8 @@ const createUserRoutes = (userController) => {
 	 */
 	router.get("/top5pokemon", userController.getTop5Pokemon.bind(userController));
 
+	router.post("/submitAnswers", userController.submitAnswers.bind(userController));
+
 	return router;
 };
 

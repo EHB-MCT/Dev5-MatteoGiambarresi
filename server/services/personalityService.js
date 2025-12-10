@@ -16,7 +16,7 @@ class PersonalityService {
 				height: { min: 10, points: 1 },
 				clicks: { min: 30, max: 60, points: 1 },
 				types: ["fire", "dragon", "electric"],
-				descriptions: ["intimidates", "angry", "strong", "charges"]
+				descriptions: ["intimidates", "angry", "strong", "charges"],
 			},
 			Calm: {
 				attack: { max: 60, points: 1 },
@@ -24,7 +24,7 @@ class PersonalityService {
 				speed: { max: 50, points: 1 },
 				clicks: { min: 10, max: 40, points: 1 },
 				types: ["water", "psychic", "normal"],
-				descriptions: ["gentle", "calm", "peaceful", "serene", "tranquil", "protective"]
+				descriptions: ["gentle", "calm", "peaceful", "serene", "tranquil", "protective"],
 			},
 			Anxious: {
 				attack: { max: 40, points: 1 },
@@ -32,21 +32,21 @@ class PersonalityService {
 				speed: { min: 80, points: 1 },
 				clicks: { min: 50, points: 1 },
 				types: ["ghost", "bug", "ice"],
-				descriptions: ["timid", "nervous", "shy", "jumps", "cautious", "fearful"]
+				descriptions: ["timid", "nervous", "shy", "jumps", "cautious", "fearful"],
 			},
 			Loyal: {
 				attack: { min: 50, max: 80, points: 1 },
 				height: { min: 8, max: 15, points: 1 },
 				clicks: { max: 15, points: 1 },
 				types: ["normal", "fighting", "fairy"],
-				descriptions: ["loyal", "protective", "devoted", "faithful", "guardian"]
+				descriptions: ["loyal", "protective", "devoted", "faithful", "guardian"],
 			},
 			Naive: {
 				attack: { min: 40, max: 70, points: 1 },
 				height: { min: 5, max: 12, points: 1 },
 				clicks: { min: 20, max: 45, points: 1 },
 				types: ["normal", "fairy", "psychic"],
-				descriptions: ["innocent", "curious", "playful", "friendly", "gentle"]
+				descriptions: ["innocent", "curious", "playful", "friendly", "gentle"],
 			},
 			Timid: {
 				attack: { max: 50, points: 1 },
@@ -54,8 +54,8 @@ class PersonalityService {
 				speed: { min: 60, points: 1 },
 				clicks: { min: 60, points: 1 },
 				types: ["psychic", "ghost", "fairy"],
-				descriptions: ["shy", "timid", "nervous", "cautious", "fearful"]
-			}
+				descriptions: ["shy", "timid", "nervous", "cautious", "fearful"],
+			},
 		};
 	}
 
@@ -74,7 +74,7 @@ class PersonalityService {
 		}, {});
 
 		team.forEach((pokemon) => {
-			Object.keys(this.personalityConfigs).forEach(personality => {
+			Object.keys(this.personalityConfigs).forEach((personality) => {
 				scores[personality] += this.calculatePersonalityScore(pokemon, personality, clicks);
 			});
 		});
@@ -138,13 +138,13 @@ class PersonalityService {
 			}
 		}
 
-		if (config.types && config.types.some(type => pokemon.types.includes(type))) {
+		if (config.types && config.types.some((type) => pokemon.types.includes(type))) {
 			score += 1;
 		}
 
 		if (config.descriptions && pokemon.description) {
 			const desc = pokemon.description.toLowerCase();
-			if (config.descriptions.some(keyword => desc.includes(keyword))) {
+			if (config.descriptions.some((keyword) => desc.includes(keyword))) {
 				score += 1;
 			}
 		}
@@ -156,7 +156,7 @@ class PersonalityService {
 /**
  * @typedef {Object} PersonalityConfig
  * @property {StatConfig} [attack] - Attack stat configuration
- * @property {StatConfig} [height] - Height stat configuration  
+ * @property {StatConfig} [height] - Height stat configuration
  * @property {StatConfig} [speed] - Speed stat configuration
  * @property {string[]} [types] - Pokemon types that match this personality
  * @property {string[]} [descriptions] - Keywords to match in Pokemon descriptions

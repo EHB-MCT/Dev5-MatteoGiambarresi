@@ -158,6 +158,11 @@ class UserRepository {
 		const collection = this.db.getCollection("pokemonrankings");
 		return await collection.find().sort({ selectionCount: -1 }).limit(5).toArray();
 	}
+
+	async saveUserAnswers(answersData) {
+		const collection = this.db.getCollection("useranswers");
+		return await collection.insertOne(answersData);
+	}
 }
 
 module.exports = UserRepository;
