@@ -75,6 +75,11 @@ function Questions() {
 	}
 
 	const currentQuestion = questions[currentQuestionIndex];
+	
+	if (!currentQuestion) {
+		return <div>Loading questions...</div>;
+	}
+	
 	return (
 		<div>
 			<h1>Questions Page</h1>
