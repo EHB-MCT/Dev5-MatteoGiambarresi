@@ -9,6 +9,7 @@ function TeamSelector() {
 	const [seconds, setSeconds] = useState(1);
 	const [minutes, setMinutes] = useState(0);
 	const [click, setClick] = useState(0);
+	const [pokemonImages, setPokemonImages] = useState({});
 
 	useEffect(() => {
 		const userString = localStorage.getItem("user");
@@ -22,6 +23,19 @@ function TeamSelector() {
 				const data = await res.json();
 				const names = data.results.map((p) => p.name);
 				setPokemonList(names);
+
+			
+				const newImages = {};
+				for (const pokemon of names) {
+					try {
+						const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
+						const data = await res.json();
+						newImages[pokemon] = data.sprites.front_default;
+					} catch (err) {
+						newImages[pokemon] = null;
+					}
+				}
+				setPokemonImages(newImages);
 			} catch (err) {
 				console.error("Error fetching Pokémon:");
 			}
@@ -44,7 +58,6 @@ function TeamSelector() {
 		return () => clearTimeout(timer);
 	}, [seconds]);
 
-
 	function toggleSelect(event) {
 		setClick(click + 1);
 
@@ -52,10 +65,8 @@ function TeamSelector() {
 		if (selected.includes(name)) {
 			const filtered = selected.filter((item) => item != name);
 			setSelected(filtered);
-
 		} else {
 			if (selected.length == 6) {
-
 				return;
 			}
 			const updated = selected.concat(name);
@@ -87,7 +98,7 @@ function TeamSelector() {
 			name: username,
 			team: selected,
 			timer: finaltimer(),
-			clicks: click
+			clicks: click,
 		}).then((data) => {
 			alert(data.message);
 			if (data.personality) {
@@ -100,18 +111,39 @@ function TeamSelector() {
 
 	return (
 		<div>
-			<h1>TeamSelector Page</h1>
-			<h2>{username}</h2>
-			{pokemonList.map((pokemon) => (
-				<div key={pokemon}>
-					<p>{pokemon}</p>
-					<button value={pokemon} onClick={toggleSelect}>
-						add
-					</button>
-				</div>
-			))}
-			<h1>{selected.length}/6</h1>
-			<button onClick={handleSubmit}>Submit Team</button>
+			<div>
+				{selected.length > 0 && (
+					<div>
+						<h3>Your Team</h3>
+						<div>
+							{selected.map((pokemon) => (
+								<span key={pokemon}>{pokemon}</span>
+							))}
+						</div>
+					</div>
+				)}
+			</div>
+
+			<div>
+				{pokemonList.map((pokemon) => {
+					const isSelected = selected.includes(pokemon);
+					return (
+						<div key={pokemon}>
+							<div>{pokemonImages[pokemon] && <img src={pokemonImages[pokemon]} alt={pokemon} />}</div>
+							<div>{pokemon}</div>
+							<button value={pokemon} onClick={toggleSelect} disabled={!isSelected && selected.length >= 6}>
+								{isSelected ? "Remove" : "Add"}
+							</button>
+						</div>
+					);
+				})}
+			</div>
+
+			<div>
+				<button onClick={handleSubmit} disabled={selected.length !== 6}>
+					{selected.length === 6 ? "Submit Team" : `Select ${6 - selected.length} more Pokémon`}
+				</button>
+			</div>
 		</div>
 	);
 }
