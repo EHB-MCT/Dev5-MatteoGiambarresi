@@ -25,8 +25,7 @@ async function initializeApp() {
 		app.use("/", createUserRoutes(userController));
 
 		const PORT = process.env.PORT || 3000;
-		app.listen(PORT, () => {
-		});
+		app.listen(PORT, () => {});
 	} catch (error) {
 		console.error("Failed to initialize app:", error);
 		process.exit(1);
