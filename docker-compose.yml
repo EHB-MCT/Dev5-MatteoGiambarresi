@@ -13,8 +13,14 @@ services:
     build: images/client
     ports:
       - "5173:5173"
+    volumes:
+      - ./images/client/src:/app/src
+      - ./images/client/public:/app/public
+      - ./images/client/index.html:/app/index.html
+      - ./images/client/vite.config.js:/app/vite.config.js
     environment:
       VITE_API_URL:
+      CHOKADIR_USEPOLLING: true
 
   mongo:
     image: mongo
