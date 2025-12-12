@@ -15,7 +15,8 @@ app.use(express.json());
 
 async function initializeApp() {
 	try {
-		await DatabaseService.connect(process.env.URI);
+		const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/dev5db";
+	await DatabaseService.connect(mongoUri);
 
 		const userRepository = new UserRepository(DatabaseService);
 		const pokemonService = new PokemonService();
@@ -24,7 +25,7 @@ async function initializeApp() {
 
 		app.use("/", createUserRoutes(userController));
 
-		const PORT = process.env.PORT || 3000;
+		const PORT = process.env.API_PORT || 3000;
 		app.listen(PORT, () => {});
 	} catch (error) {
 		console.error("Failed to initialize app:", error);
