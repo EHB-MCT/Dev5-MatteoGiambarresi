@@ -95,7 +95,7 @@ function TeamSelector() {
 			return;
 		}
 
-		getPostData("http://localhost:3000/updateTeam", "PUT", {
+		getPostData(`${import.meta.env.VITE_API_URL}/updateTeam`, "PUT", {
 			name: username,
 			team: selected,
 			timer: finaltimer(),

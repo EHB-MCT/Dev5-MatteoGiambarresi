@@ -15,7 +15,7 @@ function Username() {
 	}
 
 	function handleSubmit() {
-		getPostData("http://localhost:3000/registerName", "POST", { name }).then((data) => {
+		getPostData(`${import.meta.env.VITE_API_URL}/registerName`, "POST", { name }).then((data) => {
 			alert(data.message);
 			localStorage.setItem("user", JSON.stringify({ name: data.content.name }));
 			navigate("/teamSelector");

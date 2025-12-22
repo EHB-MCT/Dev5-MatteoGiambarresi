@@ -58,7 +58,7 @@ function Questions() {
 			const userParse = JSON.parse(userString);
 			const username = userParse.name;
 
-			getPostData("http://localhost:3000/submitAnswers", "POST", {
+			getPostData(`${import.meta.env.VITE_API_URL}/submitAnswers`, "POST", {
 				username: username,
 				personality: personality,
 				answers: finalAnswers,

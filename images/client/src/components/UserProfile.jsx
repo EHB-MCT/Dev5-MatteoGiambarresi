@@ -7,7 +7,7 @@ function UserProfile() {
 	useEffect(() => {
 		async function getUsers() {
 			try {
-				const res = await fetch("http://localhost:3000/users");
+				const res = await fetch(`${import.meta.env.VITE_API_URL}/users`);
 				const data = await res.json();
 				setUsers(data);
 			} catch (err) {
@@ -17,7 +17,7 @@ function UserProfile() {
 
 		async function getTop5Pokemon() {
 			try {
-				const res = await fetch("http://localhost:3000/top5pokemon");
+				const res = await fetch(`${import.meta.env.VITE_API_URL}/top5pokemon`);
 				const data = await res.json();
 				setTop5Pokemon(data);
 			} catch (err) {
