@@ -7,12 +7,11 @@ function Login() {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
-	const handleSubmit = (e) => {
+const handleSubmit = (e) => {
 		e.preventDefault();
 
 		if (username === "admin" && password === "password123") {
-			localStorage.setItem("isAdminAuthenticated", "true");
-			navigate("/admin");
+			navigate("/admin?auth=true");
 		} else {
 			setError("Invalid username or password");
 		}
