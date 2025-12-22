@@ -6,7 +6,7 @@ Before running the project, you need to set up your environment variables:
 
 ```bash
 # Copy the template and fill in your values
-cp .env.template .env
+cp .env.example .env
 ```
 
 Edit the `.env` file and update:
@@ -23,7 +23,7 @@ docker-compose up --build
 
 This will start:
 - API server on port 3000
-- Client application on port 5713
+- Client application on port 5173
 
 Note: This assumes you have MongoDB running locally on port 27017
 
@@ -51,7 +51,7 @@ npm run dev
 ```
 
 ## Access Points
-- Frontend: http://localhost:5713
+- Frontend: http://localhost:5173
 - API: http://localhost:3000
 
 ## Prerequisites
