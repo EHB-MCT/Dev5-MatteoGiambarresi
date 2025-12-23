@@ -13,6 +13,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+/**
+ * Initializes the Express application with dependencies and routes
+ * @returns {Promise<void>} Promise that resolves when app is fully initialized
+ * @throws {Error} When database connection or app setup fails
+ * @example
+ * await initializeApp(); // Starts the server on configured port
+ */
 async function initializeApp() {
 	try {
 		const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/dev5db";

@@ -159,10 +159,60 @@ class UserRepository {
 		return await collection.find().sort({ selectionCount: -1 }).limit(5).toArray();
 	}
 
+	/**
+	 * Saves user questionnaire answers to the database
+	 * @param {UserAnswers} answersData - User answers data object to save
+	 * @returns {Promise<InsertOneResult>} Promise resolving to MongoDB insert result
+	 * @example
+	 * await userRepository.saveUserAnswers({
+	 *   username: "John",
+	 *   personality: "analytical",
+	 *   answers: ["yes", "no", "yes"],
+	 *   yesCount: 2,
+	 *   noCount: 1
+	 * });
+	 */
 	async saveUserAnswers(answersData) {
 		const collection = this.db.getCollection("useranswers");
 		return await collection.insertOne(answersData);
 	}
 }
+
+/**
+ * @typedef {Object} UserData
+ * @property {string} name - User's name
+ * @property {string[]} pokemonTeam - Array of Pokemon names in user's team
+ * @property {string} personality - User's calculated personality type
+ * @property {string} timer - Timer value from team selection
+ * @property {number} clicks - Number of clicks made during team selection
+ */
+
+/**
+ * @typedef {Object} TeamDetails
+ * @property {string} user - Username associated with the team
+ * @property {PokemonData[]} teamdetails - Detailed Pokemon data for the team
+ */
+
+/**
+ * @typedef {Object} PersonalityAnalysis
+ * @property {string} user - Username associated with the analysis
+ * @property {string} personality - Calculated personality type
+ * @property {Object.<string, number>} scores - All personality scores
+ */
+
+/**
+ * @typedef {Object} PokemonRanking
+ * @property {string} pokemon - Pokemon name
+ * @property {number} selectionCount - Number of times this Pokemon was selected
+ */
+
+/**
+ * @typedef {Object} UserAnswers
+ * @property {string} username - User's name
+ * @property {string} personality - User's personality type
+ * @property {string[]} answers - Array of yes/no answers
+ * @property {number} yesCount - Count of 'yes' answers
+ * @property {number} noCount - Count of 'no' answers
+ */
 
 module.exports = UserRepository;

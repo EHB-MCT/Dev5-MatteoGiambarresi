@@ -222,6 +222,19 @@ class UserController {
 		}
 	}
 
+	/**
+	 * Handles submission of user personality questionnaire answers
+	 * @param {Request} req - Express request object
+	 * @param {Response} res - Express response object
+	 * @returns {Promise<void>} Promise that resolves when response is sent
+	 * @example
+	 * POST /submitAnswers
+	 * Body: {
+	 *   "username": "John",
+	 *   "personality": "analytical",
+	 *   "answers": ["yes", "no", "yes", "yes", "no"]
+	 * }
+	 */
 	async submitAnswers(req, res) {
 		try {
 			const { username, personality, answers } = req.body;
