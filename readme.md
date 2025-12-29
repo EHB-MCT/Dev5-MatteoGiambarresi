@@ -132,6 +132,8 @@ Once the application is running, you can access:
 - **Frontend Application**: http://localhost:5173
 - **Backend API**: http://localhost:3000
 - **MongoDB Admin**: http://localhost:8081
+  - **Username**: admin
+  - **Password**: pass
 - **MongoDB Database**: localhost:27017
 
 ### Development
