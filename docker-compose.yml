@@ -7,7 +7,8 @@ services:
       MONGO_URI: mongodb://mongo:27017/PokemonUsers
       API_PORT: ${API_PORT}
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
 
   web:
     build: ./images/client
@@ -29,6 +30,11 @@ services:
     restart: always
     volumes:
       - ./_volumes/db:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      timeout: 20s
+      interval: 10s
+      retries: 5
 
   mongo-express:
     image: mongo-express
